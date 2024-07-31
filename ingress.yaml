@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  name: ${APP_NAME}
+  namespace: ${DEPLOY_NAMESPACE}
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: ${DEPLOY_URL}
+    http:
+      paths:
+      - backend:
+          service:
+            name: ${APP_NAME}-service
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

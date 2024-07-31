@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ${APP_NAME}
+  name: ${APP_NAME}-deployment
+  namespace: ${DEPLOY_NAMESPACE}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ${APP_NAME}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ${APP_NAME}
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: proxy-config
+        image: ${REGISTRY}/${IMAGE_NAME}:${VERSION}
+        imagePullPolicy: IfNotPresent
+        name: ${APP_NAME}
+        resources:
+          limits:
+            cpu: "2000m"
+            memory: 1Gi
+          requests:
+            cpu: "500m"
+            memory: 500Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
