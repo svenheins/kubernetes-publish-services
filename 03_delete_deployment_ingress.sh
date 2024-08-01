@@ -1,5 +1,21 @@
 export $(cat .env)
 
+BOOL_APPLY_ADDON=false
+
+if [ -f ${APP_PATH}/addon.yaml ]; then
+  printf '####################################\n'
+  printf "File ${APP_PATH}/addon.yaml exists.\n-> Using additional addon.yaml\n\n "
+  printf '####################################\n'
+  printf 'The addon file looks like this: \n'
+  envsubst < ${APP_PATH}/addon.yaml | cat -
+  printf "\n\n"
+  BOOL_APPLY_ADDON=true
+
+else
+  printf '####################################\n'
+  printf "File ${APP_PATH}/addon.yaml does not exist.\n-> Skipping additional addon.yaml\n\n "
+fi
+
 printf '####################################\n'
 printf 'The deployment file looks like this: \n'
 envsubst < deployment.yaml | cat -
@@ -12,7 +28,13 @@ read -p "Do you want to proceed DELETING the deployment and ingress? (y/n): " ch
 case "$choice" in 
   y|Y ) 
     printf "Proceeding..."
-    # Add your command here
+    
+    if $BOOL_APPLY_ADDON; then
+      printf "Applying additional yaml!"
+      printf "kubectl delete -f ${APP_PATH}/addon.yaml"
+      envsubst < ${APP_PATH}/addon.yaml | kubectl delete -f -
+    fi
+
     printf "kubectl delete -f deployment.yaml"
     envsubst < deployment.yaml | kubectl delete -f -
     printf "kubectl delete -f service.yaml"
