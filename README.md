@@ -18,5 +18,14 @@ Run the following scripts:
 ## VPN-Access
 If you want to connect via VPN and your Kubernetes network is in a different VLAN you can use any jump-server in order to test your app:
 ```
-ssh -L <localhost-port-80>:<kubernetes-host-ip>:<kubernetes-host-port-80> -L <localhost-port-8443>:<kubernetes-host-ip>:<kubernetes-host-port-443> <accessible-host-ip>
+ssh -L 8000:<kubernetes-host-ip>:<kubernetes-host-port-80> -L <localhost-port-8443>:<kubernetes-host-ip>:<kubernetes-host-port-443> <accessible-host-ip>
+```
+In this case you also have to add the respective /etc/hosts entry
+```
+127.0.0.1   <DEPLOY_URL>
+```
+
+### Test for http
+```
+curl http://<DEPLOY_URL>:8000
 ```
