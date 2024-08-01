@@ -17,6 +17,7 @@ spec:
       labels:
         app: ${APP_NAME}
     spec:
+      serviceAccountName: ${SERVICE_ACCOUNT_NAME}
       containers:
       - envFrom:
         - configMapRef:
