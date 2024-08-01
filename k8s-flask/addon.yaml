@@ -14,6 +14,7 @@ rules:
 - apiGroups: [""]
   resources: ["pods"]
   verbs: ["list", "get", "watch"]
+  resourceNames: ["${TARGET_NAMESPACE}"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
