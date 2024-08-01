@@ -21,7 +21,7 @@ spec:
       containers:
       - envFrom:
         - configMapRef:
-            name: proxy-config
+            name: ${CONFIG_MAP_REFERENCE}
         image: ${REGISTRY}/${IMAGE_NAME}:${VERSION}
         imagePullPolicy: IfNotPresent
         name: ${APP_NAME}
