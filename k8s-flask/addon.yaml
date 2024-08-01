@@ -9,7 +9,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: pod-reader
-  namespace: ${TARGET_NAMESPACE}
+  namespace: ${DEPLOY_NAMESPACE}
 rules:
 - apiGroups: [""]
   resources: ["pods"]
@@ -19,7 +19,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: k8status-pod-reader
-  namespace: ${TARGET_NAMESPACE}
+  namespace: ${DEPLOY_NAMESPACE}
 subjects:
 - kind: ServiceAccount
   name: ${SERVICE_ACCOUNT_NAME}
